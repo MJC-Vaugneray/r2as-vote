@@ -8,6 +8,7 @@
 <div class="example-wrapper">
     <h1>Hello {{ event.name }}  ! ✅</h1>
 
-{{ event.mail }}
+<a href="/param-users/{{ uuid }}">Ajouter un votant</a>
+<a href="/param-proposals/{{ uuid }}">Ajouter une proposition</a>
 </div>
 {% endblock %}

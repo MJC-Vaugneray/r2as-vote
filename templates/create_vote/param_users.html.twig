@@ -6,8 +6,20 @@
 
 
 <div class="example-wrapper">
-    <h1>Hello {{ event.name }}  ! ✅</h1>
+    <h1><a href="/param-vote/{{uuid}}">Hello {{ event.name }}  ! ✅</a></h1>
 
 {{ event.mail }}
+{{ form_start(form) }}
+        {{ form_errors(form) }}
+
+{{ form_end(form) }}
+
+{% if userss is not null %}
+<ul>
+{% for u in userss %}
+    <li>{{ u.name }} - {{ u.mail }} - {{ u.factor }}</li>
+{% endfor %}
+</ul>
+{% endif %}
 </div>
 {% endblock %}

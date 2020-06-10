@@ -72,7 +72,9 @@ class CreateVoteController extends AbstractController
         $event = $this->getDoctrine()
             ->getRepository(Events::class)
             ->findOneBy(['uuid' => $uuid]);
-
+        $proposalss = $this->getDoctrine()
+            ->getRepository(Proposal::class)
+            ->findBy(['event_id' => $event]);
         $proposals = new Proposal();
         $proposals->setType("1");
         $proposals->setEventId($event);
@@ -96,6 +98,7 @@ class CreateVoteController extends AbstractController
         return $this->render('create_vote/param_proposals.html.twig', [ 
             'uuid' => $uuid,
             'event' => $event,
+            'proposalss' => $proposalss,
             'form' => $form->createView(),
         ]);
     }
@@ -108,11 +111,36 @@ class CreateVoteController extends AbstractController
         $event = $this->getDoctrine()
             ->getRepository(Events::class)
             ->findOneBy(['uuid' => $uuid]);
+        $userss = $this->getDoctrine()
+            ->getRepository(Users::class)
+            ->findBy(['event_id' => $event]);
+        $users = new Users();
+        $uuidd = uuid_create(UUID_TYPE_RANDOM);
+        $users->setUuid($uuidd);
+        $users->setEventId($event);
+        $form = $this->createFormBuilder($users)
+            ->add('mail')
+            ->add('name')
+            ->add('factor')
+            ->add('save', SubmitType::class, ['label' => 'Valider'])
+            ->getForm();
+        
+        $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $users = $form->getData();
 
-        return $this->render('create_vote/param_vote.html.twig', [ 
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($users);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('param_users', ['uuid' => $uuid]);
+        }
+     return $this->render('create_vote/param_users.html.twig', [ 
             'uuid' => $uuid,
             'event' => $event,
+            'userss' => $userss,
+            'form' => $form->createView(),
         ]);
     }
 }

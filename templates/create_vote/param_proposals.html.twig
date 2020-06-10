@@ -6,7 +6,7 @@
 
 
 <div class="example-wrapper">
-    <h1>Hello {{ event.name }}  ! ✅</h1>
+    <h1><a href="/param-vote/{{uuid}}">Hello {{ event.name }}  ! ✅</a></h1>
 
 {{ event.mail }}
 
@@ -14,6 +14,14 @@
         {{ form_errors(form) }}
 
 {{ form_end(form) }}
+
+{% if proposalss is not null %}
+<ul>
+{% for p in proposalss %}
+    <li>{{ p.name }}</li>
+{% endfor %}
+</ul>
+{% endif %}
 
 </div>
 {% endblock %}

@@ -6,13 +6,8 @@
 
 
 <div class="example-wrapper">
-    <h1>Hello  ! ✅</h1>
+    <h1>Hello {{ event.name }}  ! ✅</h1>
 
-{{ form_start(form) }}
-        {{ form_errors(form) }}
-
-{{ form_end(form) }}
-
-
+{{ event.mail }}
 </div>
 {% endblock %}

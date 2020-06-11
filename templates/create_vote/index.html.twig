@@ -1,16 +1,19 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CreateVoteController!{% endblock %}
+{% block title %}Créer un vote{% endblock %}
 
 {% block body %}
 
 
 <div class="example-wrapper">
-    <h1>Hello  ! ✅</h1>
+    <h1>Créer un vote</h1>
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
 
 {{ form_start(form) }}
-        {{ form_errors(form) }}
-
+{{ form_row(form.name, {'label': 'Nom de votre campagne de vote :'}) }}
+{{ form_row(form.description, {'label': 'Description de votre campagne de vote :'}) }}
+{{ form_row(form.mail, {'label': 'Votre mail :'}) }}
 {{ form_end(form) }}
 
 

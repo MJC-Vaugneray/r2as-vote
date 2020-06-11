@@ -6,9 +6,11 @@
 
 
 <div class="example-wrapper">
-    <h1>Hello {{ event.name }}  ! ✅</h1>
+    <h1>{{ event.name }}</h1>
+    <h2>{{ event.description }}</h2>
 
-<a href="/param-users/{{ uuid }}">Ajouter un votant</a>
-<a href="/param-proposals/{{ uuid }}">Ajouter une proposition</a>
+<a class="btn btn-primary" href="/param-users/{{ uuid }}">Ajouter un votant</a>
+<a class="btn btn-primary" href="/param-proposals/{{ uuid }}">Ajouter une proposition</a>
+
 </div>
 {% endblock %}

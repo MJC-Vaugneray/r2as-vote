@@ -6,16 +6,19 @@
 
 
 <div class="example-wrapper">
-    <h1><a href="/param-vote/{{uuid}}">Hello {{ event.name }}  ! ✅</a></h1>
 
-{{ event.mail }}
+    <h1><a href="/param-vote/{{uuid}}">{{ event.name }}</a></h1>
+
+</div>
+<div>
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
 
 {{ form_start(form) }}
-        {{ form_errors(form) }}
-
+{{ form_row(form.name, {'label': 'Votre nouvelle proposition :'}) }}
 {{ form_end(form) }}
 
 {% if proposalss is not null %}
+<h2>Propositions déjà enregistrées :</h2>
 <ul>
 {% for p in proposalss %}
     <li>{{ p.name }}</li>

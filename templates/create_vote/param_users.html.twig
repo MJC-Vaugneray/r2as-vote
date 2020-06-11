@@ -1,25 +1,42 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CreateVoteController!{% endblock %}
+{% block title %}Ajouter un votant{% endblock %}
 
 {% block body %}
 
 
 <div class="example-wrapper">
-    <h1><a href="/param-vote/{{uuid}}">Hello {{ event.name }}  ! ✅</a></h1>
+    <h1><a href="/param-vote/{{uuid}}">{{ event.name }}</a></h1>
 
-{{ event.mail }}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+
 {{ form_start(form) }}
-        {{ form_errors(form) }}
+{{ form_row(form.mail, {'label': 'Mail du votant :'}) }}
+{{ form_row(form.name, {'label': 'Nom du votant :'}) }}
+{{ form_row(form.factor, {'label': 'Nombre de voix :'}) }}
 
 {{ form_end(form) }}
 
 {% if userss is not null %}
+<h2>Utilisateurs déjà enregistrés :</h2>
 <ul>
 {% for u in userss %}
-    <li>{{ u.name }} - {{ u.mail }} - {{ u.factor }}</li>
+    <li>{{ u.name }} - {{ u.mail }} - {{ u.factor }} voix</a></li>
 {% endfor %}
 </ul>
 {% endif %}
+
+<!-- DÉBOGAGE, PERMET À L'ADMIN DE RÉCUPÉRER LE LE LIEN PERSONNALISÉ SUR VOTANT DONC PAS COOL
+
+{% if userss is not null %}
+{% for u in userss %}
+{{ u.name }} - {{ u.mail }} - UUID : {{u.uuid}} 
+{% endfor %}
+{% endif %}
+
+-->
+
 </div>
 {% endblock %}

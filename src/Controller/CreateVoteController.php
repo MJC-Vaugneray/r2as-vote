@@ -8,6 +8,7 @@ use App\Entity\Users;
 use App\Entity\ResponseType1;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -121,7 +122,20 @@ class CreateVoteController extends AbstractController
         $form = $this->createFormBuilder($users)
             ->add('mail')
             ->add('name')
-            ->add('factor')
+            ->add('factor', ChoiceType::class, [
+                'choices' => [
+                    '1' => '1',
+                    '2' => '2',
+                    '3' => '3',
+                    '4' => '4',
+                    '5' => '5',
+                    '6' => '6',
+                    '7' => '7',
+                    '8' => '8',
+                    '9' => '9',
+                    '10' => '10',
+                ],
+            ])
             ->add('save', SubmitType::class, ['label' => 'Valider'])
             ->getForm();
         

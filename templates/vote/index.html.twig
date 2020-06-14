@@ -1,20 +1,33 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello VoteController!{% endblock %}
+{% block title %}Plateforme de vote en ligne{% endblock %}
 
 {% block body %}
 <div class="example-wrapper">
-    <h1>Hello {{ user.name }}! ✅</h1>
+    <h1>Bonjour {{ user.name }} !</h1>
     <h2>Bienvenue aux vote en ligne pour {{event.description}} </h2>
-
-Vous avez {{ factor }} voies. 
+    <h3>Votre vote comptera pour {{ factor }} voix.</h3>
+    <p>Le créateur du vote n'aura pas accès à votre réponse mais uniquement aux résultats globaux. <b>Vous ne pourrez pas modifier un vote une fois soumis.</b></p>
 
 {% if proposals is not null %}
-<ul>
 {% for p in proposals %}
-    <li>{{ p.name }} <a href="/vote/{{uuid}}/1/{{ p.id }}/positive">pour</a> <a href="/vote/{{uuid}}/1/{{ p.id }}/negative">contre</a> <a href="/vote/{{uuid}}/1/{{ p.id }}/abstention">abstention</a></li>
+
+<div class="jumbotron  ">
+  <h1 class="display-4">Proposition n°{{ loop.index }}</h1>
+  <p class="lead">{{ p.name }}</p>
+  <hr class="my-4">
+  {% if p.id not in exist %}
+  <p>Sélectionnez votre réponse parmis les propositions :</p>
+  <a class="btn btn-success btn-lg" href="/vote/{{uuid}}/1/{{ p.id }}/positive" role="button">Pour</a>
+  <a class="btn btn-danger btn-lg" href="/vote/{{uuid}}/1/{{ p.id }}/negative" role="button">Contre</a>
+  <a class="btn btn-secondary btn-lg" href="/vote/{{uuid}}/1/{{ p.id }}/abstention" role="button">Abstention</a>
+  {% else %}
+  <b>Vous avez déjà soumis un vote pour cette proposition.</b>
+  {% endif %}
+</div>
+
 {% endfor %}
-</ul>
+
 {% endif %}
 
 </div>

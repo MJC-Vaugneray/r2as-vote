@@ -9,8 +9,10 @@ use App\Entity\ResponseType1;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CreateVoteController extends AbstractController
@@ -18,7 +20,7 @@ class CreateVoteController extends AbstractController
     /**
      * @Route("/new-vote", name="create_vote")
      */
-    public function index(Request $request)
+    public function index(Request $request, MailerInterface $mailer)
     {
         $uuid = uuid_create(UUID_TYPE_RANDOM);
         $event = new Events();
@@ -39,6 +41,19 @@ class CreateVoteController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($event);
             $entityManager->flush();
+
+            $mail = $form->get('mail')->getData();
+
+            $email = (new TemplatedEmail())
+                ->from('vote@services.r2as.org')
+                ->to($mail)
+                ->subject('Admin : nouveau vote créé')
+                ->htmlTemplate('emails/new_vote.html.twig')
+                ->context([
+                    'uuid' => $uuid,
+                ]);
+
+            $mailer->send($email);
 
             return $this->redirectToRoute('param_vote', ['uuid' => $uuid]);
         }
@@ -105,9 +120,41 @@ class CreateVoteController extends AbstractController
     }
 
     /**
+     * @Route("/results/{uuid}", name="results")
+     */
+    public function results(Request $request, $uuid)
+    {
+        $event = $this->getDoctrine()
+            ->getRepository(Events::class)
+            ->findOneBy(['uuid' => $uuid]);
+        $proposals = $this->getDoctrine()
+            ->getRepository(Proposal::class)
+            ->findBy(['event_id' => $event]);
+        $responsesType1 = $this->getDoctrine()
+            ->getRepository(ResponseType1::class)
+            ->findBy(['event_id' => $event]);
+
+        foreach ($responsesType1 as $r){
+            $response[] = array(
+                'proposal' => $r->getProposalId()->getId(),
+                'positive' => $r->getpositive(),
+                'negative' => $r->getnegative(),
+                'abstention' => $r->getabstention(),
+            );
+        }
+
+        return $this->render('create_vote/results.html.twig', [
+            'uuid' => $uuid,
+            'event' => $event,
+            'proposals' => $proposals,
+            'responsesType1' => $response,
+        ]);
+    }
+
+    /**
      * @Route("/param-users/{uuid}", name="param_users")
      */
-    public function paramusers(Request $request, $uuid)
+    public function paramusers(Request $request, $uuid, MailerInterface $mailer)
     {
         $event = $this->getDoctrine()
             ->getRepository(Events::class)
@@ -147,6 +194,21 @@ class CreateVoteController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($users);
             $entityManager->flush();
+
+            $mail = $form->get('mail')->getData();
+
+            $email = (new TemplatedEmail())
+                ->from('vote@services.r2as.org')
+                ->to($mail)
+                ->subject('Votre invitation au vote')
+                ->htmlTemplate('emails/new_user.html.twig')
+                ->context([
+                    'uuid' => $uuidd,
+                    'event' => $event,
+                ]);
+
+            $mailer->send($email);
+
 
             return $this->redirectToRoute('param_users', ['uuid' => $uuid]);
         }

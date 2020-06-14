@@ -32,11 +32,17 @@ class VoteController extends AbstractController
             ->getRepository(ResponseType1::class)
             ->findBy(['user_id' => $user]);
 
+        $exist[] = '0';
+        foreach ($responsesType1 as $response){
+             $exist[] = ($response->getProposalId()->getId());
+        }
+
         return $this->render('vote/index.html.twig', [
             'user' => $user,
             'uuid' => $uuid,
             'event' => $event,
             'factor' => $factor,
+            'exist' => $exist,
             'proposals' => $proposals,
             'responsesType1' => $responsesType1,
         ]);

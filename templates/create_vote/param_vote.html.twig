@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CreateVoteController!{% endblock %}
+{% block title %}Gestion d'une campagne de vote{% endblock %}
 
 {% block body %}
 
@@ -9,8 +9,9 @@
     <h1>{{ event.name }}</h1>
     <h2>{{ event.description }}</h2>
 
-<a class="btn btn-primary" href="/param-users/{{ uuid }}">Ajouter un votant</a>
-<a class="btn btn-primary" href="/param-proposals/{{ uuid }}">Ajouter une proposition</a>
+<a class="btn btn-success" href="/param-users/{{ uuid }}">Ajouter un votant</a>
+<a class="btn btn-success" href="/param-proposals/{{ uuid }}">Ajouter une proposition</a>
+<a class="btn btn-primary" href="/results/{{ uuid }}">Résultats</a>
 
 </div>
 {% endblock %}

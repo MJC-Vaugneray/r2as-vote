@@ -3,11 +3,16 @@
 {% block title %}Bienvenue sur l'outil de vote de R2AS !{% endblock %}
 
 {% block body %}
-<div class="example-wrapper">
-    <h1>Bienvenue sur l'outil de vote de R2AS !</h1>
-</div>
 
-<a class="btn btn-primary" href="/new-vote" role="button">Créer un vote</a>
+<h1 class="display-4">Bienvenue sur l'outil de vote de R2AS !</h1>
+<p class="lead">Cet outil simple et gratuit permet d'organiser un vote électronique sans inscription.</p>
+<ul class="list-group list-group-flush">
+  <li class="list-group-item">Créez un vote en cliquant sur le bouton « <a href="/new-vote">Créer un vote</a> », renseignez le nom de votre campagne, sa description et indiquez votre adresse mail pour recevoir le lien d'administration.</li>
+  <li class="list-group-item">Ajoutez des propositions en cliquant sur le bouton « Ajouter une proposition », vos participants pourront se prononcer <b>pour</b>, <b>contre</b> ou <b>s'abstenir</b>. <i>D'autres modes de vote sont actuellement à l'étude</i>.</li>
+  <li class="list-group-item">Ajoutez des votants en cliquant sur le bouton « Ajouter un votant », définissez la pondération du vote (le nombre de voix de chaque votant), renseignez l'adresse mail sur laquelle le votant recevra son lien de vote personnel.</li>
+  <li class="list-group-item">Accédez aux résultats du vote via le bouton « Résultats ». Vous ne verrez pas les résultats nominativement, mais uniquement les résultats globaux.</li>
+</ul>
+<center><a class="btn btn-outline-success btn-lg" href="/new-vote" role="button">Créer un vote</a></center>
 
 
 {% endblock %}

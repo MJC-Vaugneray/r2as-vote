@@ -7,6 +7,7 @@ use App\Entity\Proposal;
 use App\Entity\Users;
 use App\Entity\ResponseType1;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -29,7 +30,7 @@ class CreateVoteController extends AbstractController
         $form = $this->createFormBuilder($event)
             ->add('name')
             ->add('description')
-            ->add('mail')
+            ->add('mail', EmailType::class)
             ->add('save', SubmitType::class, ['label' => 'Valider'])
             ->getForm();
         
@@ -167,7 +168,7 @@ class CreateVoteController extends AbstractController
         $users->setUuid($uuidd);
         $users->setEventId($event);
         $form = $this->createFormBuilder($users)
-            ->add('mail')
+            ->add('mail', EmailType::class)
             ->add('name')
             ->add('factor', ChoiceType::class, [
                 'choices' => [

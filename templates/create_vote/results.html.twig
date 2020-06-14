@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Résultats !{% endblock %}
+
+{% block body %}
+
+
+<div class="example-wrapper">
+
+    <h1><a href="/param-vote/{{uuid}}">{{ event.name }}</a></h1>
+
+</div>
+<div>
+
+{% for p in proposals %}
+
+{% set positive = '0' %}
+{% set negative = '0' %}
+{% set abstention = '0' %}
+
+    {% for r in responsesType1 %}
+        {% if r.proposal == p.id %}
+            {% set positive = positive + r.positive %}
+            {% set negative = negative + r.negative %}
+            {% set abstention = abstention + r.abstention %}
+        {% endif %}
+    {% endfor %}
+
+<h3>{{ p.name }}</h3>
+
+<b>Pour :</b> {{ positive }}<br>
+<b>Contre :</b> {{ negative }}<br>
+<b>Abstention :</b> {{ abstention }}<br>
+
+<hr class="my-4">
+{% endfor %}
+</div>
+{% endblock %}

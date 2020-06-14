@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Plateforme de vote en ligne{% endblock %}
+
+{% block body %}
+<div class="example-wrapper">
+  <h1>Bonjour {{ user.name }} !</h1>
+  <h3>{{event.description}}</h3>
+
+  <div class="alert alert-danger" role="alert">
+    L'accès à ce vote est actuellement désactivé. Veuillez contacter son créateur pour toute question : <a href="mailto:{{event.mail}}">{{event.mail}}</a>.
+  </div>
+</div>
+{% endblock %}

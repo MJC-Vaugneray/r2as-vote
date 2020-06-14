@@ -32,6 +32,14 @@ class VoteController extends AbstractController
             ->getRepository(ResponseType1::class)
             ->findBy(['user_id' => $user]);
 
+        $eventstate = $event->getState();
+        if ($eventstate == false) {
+            return $this->render('vote/deactivated_vote.html.twig', [
+                'user' => $user,
+                'uuid' => $uuid,
+                'event' => $event,
+            ]);    
+        }
         $exist[] = '0';
         foreach ($responsesType1 as $response){
              $exist[] = ($response->getProposalId()->getId());

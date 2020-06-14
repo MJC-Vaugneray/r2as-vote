@@ -121,6 +121,38 @@ class CreateVoteController extends AbstractController
     }
 
     /**
+     * @Route("/disable/{uuid}", name="disablevote")
+     */
+    public function disablevote(Request $request, $uuid)
+    {
+        $event = $this->getDoctrine()
+            ->getRepository(Events::class)
+            ->findOneBy(['uuid' => $uuid]);
+        $event->setState(false);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($event);
+        $entityManager->flush();
+
+            return $this->redirectToRoute('param_vote', ['uuid' => $uuid]);
+    }
+
+    /**
+     * @Route("/enable/{uuid}", name="enablevote")
+     */
+    public function enablevote(Request $request, $uuid)
+    {
+        $event = $this->getDoctrine()
+            ->getRepository(Events::class)
+            ->findOneBy(['uuid' => $uuid]);
+        $event->setState(true);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($event);
+        $entityManager->flush();
+
+            return $this->redirectToRoute('param_vote', ['uuid' => $uuid]);
+    }
+
+    /**
      * @Route("/results/{uuid}", name="results")
      */
     public function results(Request $request, $uuid)

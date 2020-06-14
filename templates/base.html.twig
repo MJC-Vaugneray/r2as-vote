@@ -27,7 +27,7 @@
                 padding-bottom: 1.5rem;
             }
             .footer {
-                position: absolute;
+                position: fixed;
                 bottom: 0;
                 width: 100%;
                 height: 60px;
@@ -47,11 +47,13 @@
     </div>
 
     <footer class="footer">
+    <div class="container" style="background: transparent; padding-bottom: 0.2rem; border: transparent;">
         <center>
             <span class="text-black">
-                <a class="text" href="/">R2AS vote</a> : un service gratuit fourni par <a href="http://r2as.org/">R2AS</a> sans aucune garantie. Aucun cookie. Logiciel libre, <a href="https://github.com/cleming/r2as-vote">code source et informations</a>.
+                <a class="text" href="/">R2AS vote</a> : un service gratuit fourni par <a href="http://r2as.org/">R2AS</a> <u>sans aucune garantie</u>. <b>Aucun cookie</b>. Logiciel libre, <a href="https://github.com/cleming/r2as-vote">code source et informations</a>.
             </span>
         </center>
+    </div>
     </footer>
         {% block javascripts %}{% endblock %}
     </body>

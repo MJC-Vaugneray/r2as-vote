@@ -153,6 +153,48 @@ class CreateVoteController extends AbstractController
     }
 
     /**
+     * @Route("/delete-user/{uuid}/{userid}", name="deleteuser")
+     */
+    public function deleteuser(Request $request, $uuid, $userid)
+    {
+        $event = $this->getDoctrine()
+            ->getRepository(Events::class)
+            ->findOneBy(['uuid' => $uuid]);
+        $user = $this->getDoctrine()
+            ->getRepository(Users::class)
+            ->findOneBy(['id' => $userid]);
+        $userevent = $user->getEventId()->getId();
+        $eventid = $event->getId();
+        if ($userevent == $eventid){
+            $this->getDoctrine()->getManager()->remove($user);
+            $this->getDoctrine()->getManager()->flush();
+        }
+
+        return $this->redirectToRoute('param_users', ['uuid' => $uuid]);
+    }
+
+    /**
+     * @Route("/delete-proposal/{uuid}/{proposalid}", name="deleteproposal")
+     */
+    public function deleteproposal(Request $request, $uuid, $proposalid)
+    {
+        $event = $this->getDoctrine()
+            ->getRepository(Events::class)
+            ->findOneBy(['uuid' => $uuid]);
+        $proposal = $this->getDoctrine()
+            ->getRepository(Proposal::class)
+            ->findOneBy(['id' => $proposalid]);
+        $proposalevent = $proposal->getEventId()->getId();
+        $eventid = $event->getId();
+        if ($proposalevent == $eventid){
+            $this->getDoctrine()->getManager()->remove($proposal);
+            $this->getDoctrine()->getManager()->flush();
+        }
+
+        return $this->redirectToRoute('param_proposals', ['uuid' => $uuid]);
+    }
+
+    /**
      * @Route("/param-users/{uuid}", name="param_users")
      */
     public function paramusers(Request $request, $uuid, MailerInterface $mailer)

@@ -23,7 +23,7 @@
 <h2>Utilisateurs déjà enregistrés :</h2>
 <ul>
 {% for u in userss %}
-    <li>{{ u.name }} - {{ u.mail }} - {{ u.factor }} voix</a></li>
+    <li>{{ u.name }} - {{ u.mail }} - {{ u.factor }} voix - <a href="/delete-user/{{ uuid }}/{{ u.id }}">Supprimer</a></li>
 {% endfor %}
 </ul>
 {% endif %}

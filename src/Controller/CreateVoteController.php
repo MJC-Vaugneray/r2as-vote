@@ -50,7 +50,7 @@ class CreateVoteController extends AbstractController
             $mail = $form->get('mail')->getData();
 
             $email = (new TemplatedEmail())
-                ->from('vote@services.r2as.org')
+                ->from('noemie.ployet@r2as.org')
                 ->to($mail)
                 ->subject('Admin : nouveau vote créé')
                 ->htmlTemplate('emails/new_vote.html.twig')
@@ -294,7 +294,7 @@ class CreateVoteController extends AbstractController
             $mail = $form->get('mail')->getData();
 
             $email = (new TemplatedEmail())
-                ->from('vote@services.r2as.org')
+                ->from('noemie.ployet@r2as.org')
                 ->to($mail)
                 ->subject('Votre invitation au vote')
                 ->htmlTemplate('emails/new_user.html.twig')
@@ -351,7 +351,7 @@ class CreateVoteController extends AbstractController
                 $entityManager->flush();
 
                 $email = (new TemplatedEmail())
-                    ->from('vote@services.r2as.org')
+                    ->from('noemie.ployet@r2as.org')
                     ->to($record['email'])
                     ->subject('Votre invitation au vote')
                     ->htmlTemplate('emails/new_user.html.twig')

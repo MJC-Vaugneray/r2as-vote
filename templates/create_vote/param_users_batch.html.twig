@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter un votant{% endblock %}
+
+{% block body %}
+
+
+<div class="example-wrapper">
+    <h1><a href="/param-vote/{{uuid}}">{{ event.name }}</a></h1>
+
+    <b>Format à utiliser :</b>
+
+    <pre>
+nom,mail,nombreDeVoix
+    </pre>
+    <b>Exemple :</b>
+
+    <pre>
+Julien Lepers,julien@lepers.fr,2
+Mathilde,contact@blabla.com,1
+    </pre>
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{{ form_start(form) }}
+
+    {{ form_row(form.csv, {'label': 'Collez ici votre liste et patientez après validation (recommandation : max 500 ajouts à la fois) :'}) }}
+
+{{ form_end(form) }}
+
+
+<a class="btn btn-primary" href="/param-vote/{{uuid}}" role="button">Retour à la page d'admin</a>
+
+</div>
+{% endblock %}

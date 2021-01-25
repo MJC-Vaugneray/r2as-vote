@@ -8,6 +8,7 @@ use App\Entity\Users;
 use App\Entity\ResponseType1;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,6 +16,9 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Routing\Annotation\Route;
+use League\Csv\Reader;
+use League\Csv\Statement;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class CreateVoteController extends AbstractController
 {
@@ -173,6 +177,7 @@ class CreateVoteController extends AbstractController
                 'positive' => $r->getpositive(),
                 'negative' => $r->getnegative(),
                 'abstention' => $r->getabstention(),
+                'user' => $r->getUserId(),
             );
         }
 
@@ -227,6 +232,25 @@ class CreateVoteController extends AbstractController
     }
 
     /**
+     * @Route("/list-users/{uuid}", name="list_users")
+     */
+    public function listusers(Request $request, $uuid)
+    {
+        $event = $this->getDoctrine()
+            ->getRepository(Events::class)
+            ->findOneBy(['uuid' => $uuid]);
+        $users = $this->getDoctrine()
+            ->getRepository(Users::class)
+            ->findBy(['event_id' => $event]);
+
+     return $this->render('create_vote/list_users.html.twig', [ 
+            'uuid' => $uuid,
+            'event' => $event,
+            'users' => $users,
+        ]);
+    }
+
+    /**
      * @Route("/param-users/{uuid}", name="param_users")
      */
     public function paramusers(Request $request, $uuid, MailerInterface $mailer)
@@ -234,9 +258,6 @@ class CreateVoteController extends AbstractController
         $event = $this->getDoctrine()
             ->getRepository(Events::class)
             ->findOneBy(['uuid' => $uuid]);
-        $userss = $this->getDoctrine()
-            ->getRepository(Users::class)
-            ->findBy(['event_id' => $event]);
         $users = new Users();
         $uuidd = uuid_create(UUID_TYPE_RANDOM);
         $users->setUuid($uuidd);
@@ -290,7 +311,64 @@ class CreateVoteController extends AbstractController
      return $this->render('create_vote/param_users.html.twig', [ 
             'uuid' => $uuid,
             'event' => $event,
-            'userss' => $userss,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/param-users-batch/{uuid}", name="param_users_batch")
+     */
+    public function paramusersbatch(Request $request, $uuid, MailerInterface $mailer)
+    {
+        $event = $this->getDoctrine()
+            ->getRepository(Events::class)
+            ->findOneBy(['uuid' => $uuid]);
+        $form = $this->createFormBuilder()
+            ->add('csv', TextareaType::class)
+            ->add('save', SubmitType::class, ['label' => 'Valider'])
+            ->getForm();
+        $entityManager = $this->getDoctrine()->getManager();
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            $import = $form->get('csv')->getData();
+
+            $reader = Reader::createFromString($import);
+            $records = $reader->getRecords(['name', 'email', 'factor']);
+
+            foreach ($records as $row => $record){
+                $uuidd = uuid_create(UUID_TYPE_RANDOM);
+                $users = new Users();
+                $users
+                    ->setUuid($uuidd)
+                    ->setEventId($event)
+                    ->setMail($record['email'])
+                    ->setName($record['name'])
+                    ->setFactor($record['factor'])
+                ;
+                $entityManager->persist($users);
+                $entityManager->flush();
+
+                $email = (new TemplatedEmail())
+                    ->from('vote@services.r2as.org')
+                    ->to($record['email'])
+                    ->subject('Votre invitation au vote')
+                    ->htmlTemplate('emails/new_user.html.twig')
+                    ->context([
+                        'uuid' => $uuidd,
+                        'event' => $event,
+                    ]);
+
+                $mailer->send($email);
+
+            }
+            return $this->redirectToRoute('param_users_batch', ['uuid' => $uuid]);
+        }
+
+     return $this->render('create_vote/param_users_batch.html.twig', [ 
+            'uuid' => $uuid,
+            'event' => $event,
             'form' => $form->createView(),
         ]);
     }

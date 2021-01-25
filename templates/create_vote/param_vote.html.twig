@@ -11,6 +11,8 @@
     <p>Participation au vote actuellement {% if event.state %}activée{% else %}désactivée{% endif %}.</p>
 
 <a class="btn btn-success" href="/param-users/{{ uuid }}">Ajouter un votant</a>
+<a class="btn btn-success" href="/param-users-batch/{{ uuid }}">Ajouter de votants en masse</a>
+<a class="btn btn-success" href="/list-users/{{ uuid }}">Gérer les votants</a>
 <a class="btn btn-success" href="/param-proposals/{{ uuid }}">Ajouter une proposition</a>
 <a class="btn btn-primary" href="/results/{{ uuid }}">Résultats</a>
 {% if event.state %}<a class="btn btn-outline-danger" href="/disable/{{ uuid }}" role="button">Désactiver le vote</a>{% else %}<a class="btn btn-outline-success" href="/enable/{{ uuid }}" role="button">Activer le vote</a>{% endif %}

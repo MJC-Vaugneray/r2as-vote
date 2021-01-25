@@ -12,6 +12,8 @@
 </div>
 <div>
 
+<h3>Résultats :</h3>
+
 {% for p in proposals %}
 
 {% set positive = '0' %}
@@ -35,4 +37,15 @@
 <hr class="my-4">
 {% endfor %}
 </div>
+
+<h3>Liste des votants ayant répondu à au moins une proposition :</h3>
+<ul>
+{% set newArray = [] %}
+  {% for r in responsesType1 %}
+  {% if r.user.mail  not in newArray %}
+   <li>{{ r.user.name }} - {{ r.user.mail }}</li>
+  {% set newArray = newArray|merge([r.user.mail]) %}
+  {% endif %}
+{% endfor %}
+</ul>
 {% endblock %}

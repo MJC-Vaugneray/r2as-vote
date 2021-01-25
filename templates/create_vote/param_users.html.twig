@@ -19,25 +19,7 @@
 
 {{ form_end(form) }}
 
-{% if userss is not null %}
-<h2>Utilisateurs déjà enregistrés :</h2>
-<ul>
-{% for u in userss %}
-    <li>{{ u.name }} - {{ u.mail }} - {{ u.factor }} voix - <a href="/delete-user/{{ uuid }}/{{ u.id }}">Supprimer</a></li>
-{% endfor %}
-</ul>
-{% endif %}
-
 <a class="btn btn-primary" href="/param-vote/{{uuid}}" role="button">Retour à la page d'admin</a>
-<!-- DÉBOGAGE, PERMET À L'ADMIN DE RÉCUPÉRER LE LE LIEN PERSONNALISÉ SUR VOTANT DONC PAS COOL
-
-{% if userss is not null %}
-{% for u in userss %}
-{{ u.name }} - {{ u.mail }} - UUID : {{u.uuid}} 
-{% endfor %}
-{% endif %}
-
--->
 
 </div>
 {% endblock %}

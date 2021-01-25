@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter un votant{% endblock %}
+
+{% block body %}
+
+<h2>Utilisateurs déjà enregistrés :</h2>
+{% if users is not null %}
+<ul>
+{% for u in users %}
+    <li>{{ u.name }} - {{ u.mail }} - {{ u.factor }} voix - <a href="/delete-user/{{ uuid }}/{{ u.id }}">Supprimer</a></li>
+{% endfor %}
+</ul>
+{% endif %}
+
+<a class="btn btn-primary" href="/param-vote/{{uuid}}" role="button">Retour à la page d'admin</a>
+
+</div>
+{% endblock %}

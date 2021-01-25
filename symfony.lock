@@ -90,6 +90,9 @@
     "laminas/laminas-zendframework-bridge": {
         "version": "1.0.4"
     },
+    "league/csv": {
+        "version": "9.6.2"
+    },
     "nikic/php-parser": {
         "version": "v4.5.0"
     },
@@ -257,6 +260,9 @@
     },
     "symfony/polyfill-intl-idn": {
         "version": "v1.17.0"
+    },
+    "symfony/polyfill-intl-normalizer": {
+        "version": "v1.18.1"
     },
     "symfony/polyfill-mbstring": {
         "version": "v1.17.0"

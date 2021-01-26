@@ -42,9 +42,9 @@
 <ul>
 {% set newArray = [] %}
   {% for r in responsesType1 %}
-  {% if r.user.mail  not in newArray %}
+  {% if r.user.uuid not in newArray %}
    <li>{{ r.user.name }} - {{ r.user.mail }}</li>
-  {% set newArray = newArray|merge([r.user.mail]) %}
+  {% set newArray = newArray|merge([r.user.uuid]) %}
   {% endif %}
 {% endfor %}
 </ul>
